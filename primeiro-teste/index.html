@@ -12,8 +12,17 @@
 		<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 		<script>
 
+			const NomeContext = React.createContext('nome');
+
 			function MeuComponente1(){
-				return React.createElement(MeuComponente2);
+				const meuNome = "Gustavo";
+				return (
+					React.createElement(NomeContext.Provider, { value: meuNome},
+						React.createElement('div', { className: 'componente-1' },
+							React.createElement(MeuComponente2)
+						)
+					)
+				)
 			}
 
 			function MeuComponente2(){
@@ -21,18 +30,17 @@
 			}
 
 			function MeuComponente3(){
-				const meuNome = "Gustavo";
-				return (
-					React.createElement('div', { className: 'componente-3' },
-							React.createElement(MeuComponente4, { nome: meuNome })
-					)
-				)
+				return React.createElement(MeuComponente4);
 			}
 
 			function MeuComponente4(props){
 				return (
-					React.createElement('div', { className: 'componente-4' },
-						React.createElement('p', null, props.nome)
+					React.createElement(NomeContext.Consumer, null,
+						(nomeContext) => (
+							React.createElement('div', { className: 'componente-4' },
+								React.createElement('p', null, nomeContext)
+							)
+						)
 					)
 				)
 			}
